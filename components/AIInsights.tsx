@@ -72,7 +72,7 @@ const AIInsights = () => {
 
     try {
       // Generate question based on insight title and action
-      const question = `₫{insight.title}: ₫{insight.action}`;
+      const question = `${insight.title}: ${insight.action}`;
 
       // Use server action to generate AI answer
       const answer = await generateInsightAnswer(question);
@@ -156,10 +156,10 @@ const AIInsights = () => {
     const diffMins = Math.floor(diffMs / 60000);
 
     if (diffMins < 1) return 'Just now';
-    if (diffMins < 60) return `₫{diffMins}m ago`;
+    if (diffMins < 60) return `${diffMins}m ago`;
 
     const diffHours = Math.floor(diffMins / 60);
-    if (diffHours < 24) return `₫{diffHours}h ago`;
+    if (diffHours < 24) return `${diffHours}h ago`;
 
     return lastUpdated.toLocaleDateString();
   };
@@ -262,7 +262,7 @@ const AIInsights = () => {
           return (
             <div
               key={insight.id}
-              className={`relative overflow-hidden rounded-xl p-3 sm:p-4 border-l-4 hover:shadow-lg transition-all duration-200 ₫{getInsightColors(
+              className={`relative overflow-hidden rounded-xl p-3 sm:p-4 border-l-4 hover:shadow-lg transition-all duration-200 ${getInsightColors(
                 insight.type
               )}`}
             >
@@ -270,7 +270,7 @@ const AIInsights = () => {
                 <div className='flex-1'>
                   <div className='flex items-center gap-2 sm:gap-3 mb-2'>
                     <div
-                      className={`w-6 h-6 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center ₫{
+                      className={`w-6 h-6 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center ${
                         insight.type === 'warning'
                           ? 'bg-yellow-100 dark:bg-yellow-900/50'
                           : insight.type === 'success'
@@ -302,9 +302,9 @@ const AIInsights = () => {
                     <div className='text-left'>
                       <span
                         onClick={() => handleActionClick(insight)}
-                        className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg font-medium text-xs cursor-pointer transition-all duration-200 ₫{getButtonColors(
+                        className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg font-medium text-xs cursor-pointer transition-all duration-200 ${getButtonColors(
                           insight.type
-                        )} hover:bg-white/50 dark:hover:bg-gray-700/50 ₫{
+                        )} hover:bg-white/50 dark:hover:bg-gray-700/50 ${
                           currentAnswer ? 'bg-white/50 dark:bg-gray-700/50' : ''
                         }`}
                       >

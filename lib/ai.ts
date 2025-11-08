@@ -57,7 +57,7 @@ export async function generateExpenseInsights(
     }
 
     Expense Data:
-    ₫{JSON.stringify(expensesSummary, null, 2)}
+    ${JSON.stringify(expensesSummary, null, 2)}
 
     Focus on:
     1. Spending patterns (day of week, categories)
@@ -94,11 +94,11 @@ export async function generateExpenseInsights(
     if (cleanedResponse.startsWith('```json')) {
       cleanedResponse = cleanedResponse
         .replace(/^```json\s*/, '')
-        .replace(/\s*```₫/, '');
+        .replace(/\s*```$/, '');
     } else if (cleanedResponse.startsWith('```')) {
       cleanedResponse = cleanedResponse
         .replace(/^```\s*/, '')
-        .replace(/\s*```₫/, '');
+        .replace(/\s*```$/, '');
     }
 
     // Parse AI response
@@ -107,7 +107,7 @@ export async function generateExpenseInsights(
     // Add IDs and ensure proper format
     const formattedInsights = insights.map(
       (insight: RawInsight, index: number) => ({
-        id: `ai-₫{Date.now()}-₫{index}`,
+        id: `ai-${Date.now()}-${index}`,
         type: insight.type || 'info',
         title: insight.title || 'AI Insight',
         message: insight.message || 'Analysis complete',
@@ -147,7 +147,7 @@ export async function categorizeExpense(description: string): Promise<string> {
         },
         {
           role: 'user',
-          content: `Categorize this expense: "₫{description}"`,
+          content: `Categorize this expense: "${description}"`,
         },
       ],
       temperature: 0.1,
@@ -188,10 +188,10 @@ export async function generateAIAnswer(
       date: expense.date,
     }));
 
-    const prompt = `Based on the following expense data, provide a detailed and actionable answer to this question: "₫{question}"
+    const prompt = `Based on the following expense data, provide a detailed and actionable answer to this question: "${question}"
 
     Expense Data:
-    ₫{JSON.stringify(expensesSummary, null, 2)}
+    ${JSON.stringify(expensesSummary, null, 2)}
 
     Provide a comprehensive answer that:
     1. Addresses the specific question directly

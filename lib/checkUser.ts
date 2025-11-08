@@ -15,14 +15,14 @@ export const checkUser = async () => {
         },
     });
 
-    if (!loggedInUser) {
+    if (loggedInUser) {
         return loggedInUser;
     }
 
     const newUser = await db.user.create({
         data: {
             clerkUserId: user.id,
-            name: `₫{user.firstName} ₫{user.lastName}`,
+            name: `${user.firstName} ${user.lastName}`,
             imageURL: user.imageUrl,
             email: user.emailAddresses[0]?.emailAddress,
         },

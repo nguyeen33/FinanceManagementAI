@@ -121,7 +121,7 @@ export default function Navbar() {
               aria-label='Toggle mobile menu'
             >
               <svg
-                className={`w-5 h-5 sm:w-6 sm:h-6 transition-transform duration-200 ₫{
+                className={`w-5 h-5 sm:w-6 sm:h-6 transition-transform duration-200 ${
                   isMobileMenuOpen ? 'rotate-90' : ''
                 }`}
                 fill='none'
@@ -150,7 +150,7 @@ export default function Navbar() {
 
         {/* Mobile Menu */}
         <div
-          className={`md:hidden transition-all duration-300 ease-in-out ₫{
+          className={`md:hidden transition-all duration-300 ease-in-out ${
             isMobileMenuOpen
               ? 'max-h-96 opacity-100 pb-3 sm:pb-4'
               : 'max-h-0 opacity-0 overflow-hidden'
