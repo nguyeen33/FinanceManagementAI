@@ -49,7 +49,7 @@ export default function RootLayout({
       >
         <ThemeProvider>
           <ClerkThemeProvider>
-            <Navbar />
+            <Navbar/>
             {children}
             <Footer />
           </ClerkThemeProvider>
