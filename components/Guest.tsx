@@ -231,7 +231,7 @@ const Guest = () => {
                   </div>
                 </div>
                 <p className='text-sm sm:text-base text-gray-700 dark:text-gray-300 leading-relaxed mb-4'>
-                  &ldquo;The AI-powered insights from ExpenseTracker have helped
+                  &ldquo;The AI-powered insights from FinanceManagement have helped
                   me identify and reduce unnecessary spending. The smart
                   categorization is amazing!&rdquo;
                 </p>
