@@ -10,12 +10,16 @@ interface RawInsight {
 
 const openai = new OpenAI({
   baseURL: 'https://openrouter.ai/api/v1',
-  apiKey: process.env.OPENROUTER_API_KEY || process.env.OPENAI_API_KEY,
+  apiKey: process.env.OPENROUTER_API_KEY,
   defaultHeaders: {
     'HTTP-Referer': process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
-    'X-Title': 'ExpenseTracker AI',
+    'X-Title': 'FinanceManagement AI',
+    'Content-Type': 'application/json',
   },
 });
+
+// Allow overriding the model via env. If using OpenRouter, set OPENROUTER_MODEL to a valid OpenRouter model.
+const OPENROUTER_MODEL = process.env.OPENROUTER_MODEL || 'mistralai/mixtral-8x7b-instruct:latest';
 
 export interface ExpenseRecord {
   id: string;
@@ -37,6 +41,20 @@ export interface AIInsight {
 export async function generateExpenseInsights(
   expenses: ExpenseRecord[]
 ): Promise<AIInsight[]> {
+  if (!process.env.OPENROUTER_API_KEY) {
+    console.error('❌ OpenRouter API key is not configured');
+    return [
+      {
+        id: 'config-error',
+        type: 'warning',
+        title: 'AI Service Not Configured',
+        message: 'The AI service is not properly configured. Please contact support.',
+        action: 'Contact support',
+        confidence: 1.0,
+      },
+    ];
+  }
+
   try {
     // Prepare expense data for AI analysis
     const expensesSummary = expenses.map((expense) => ({
@@ -67,8 +85,9 @@ export async function generateExpenseInsights(
 
     Return only valid JSON array, no additional text.`;
 
+    console.log('Using model for OpenRouter:', OPENROUTER_MODEL);
     const completion = await openai.chat.completions.create({
-      model: 'deepseek/deepseek-chat-v3-0324:free',
+      model: OPENROUTER_MODEL,
       messages: [
         {
           role: 'system',
@@ -137,8 +156,9 @@ export async function generateExpenseInsights(
 
 export async function categorizeExpense(description: string): Promise<string> {
   try {
+    console.log('Using model for categorization:', OPENROUTER_MODEL);
     const completion = await openai.chat.completions.create({
-      model: 'deepseek/deepseek-chat-v3-0324:free',
+      model: OPENROUTER_MODEL,
       messages: [
         {
           role: 'system',
@@ -201,8 +221,9 @@ export async function generateAIAnswer(
     
     Return only the answer text, no additional formatting.`;
 
+    console.log('Using model for Q&A:', OPENROUTER_MODEL);
     const completion = await openai.chat.completions.create({
-      model: 'deepseek/deepseek-chat-v3-0324:free',
+      model: OPENROUTER_MODEL,
       messages: [
         {
           role: 'system',

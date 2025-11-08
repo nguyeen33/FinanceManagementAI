@@ -28,7 +28,9 @@ const AIInsights = () => {
   const loadInsights = async () => {
     setIsLoading(true);
     try {
+      console.log('🔄 Requesting AI insights...');
       const newInsights = await getAIInsights();
+      console.log('📊 Received insights:', newInsights);
       setInsights(newInsights);
       setLastUpdated(new Date());
     } catch (error) {

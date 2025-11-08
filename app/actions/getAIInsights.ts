@@ -6,10 +6,14 @@ import { generateExpenseInsights, AIInsight, ExpenseRecord } from '@/lib/ai';
 
 export async function getAIInsights(): Promise<AIInsight[]> {
   try {
+    console.log('🔄 Starting AI insights generation...');
+    
     const user = await checkUser();
     if (!user) {
+      console.error('❌ User not authenticated');
       throw new Error('User not authenticated');
     }
+    console.log('✅ User authenticated:', user.clerkUserId);
 
     // Get user's recent expenses (last 30 days)
     const thirtyDaysAgo = new Date();
@@ -34,7 +38,7 @@ export async function getAIInsights(): Promise<AIInsight[]> {
         {
           id: 'welcome-1',
           type: 'info',
-          title: 'Welcome to ExpenseTracker AI!',
+          title: 'Welcome to FinanceManagement AI!',
           message:
             'Start adding your expenses to get personalized AI insights about your spending patterns.',
           action: 'Add your first expense',
@@ -60,9 +64,14 @@ export async function getAIInsights(): Promise<AIInsight[]> {
       description: expense.text,
       date: expense.createdAt.toISOString(),
     }));
+    
+    console.log(`📊 Found ${expenses.length} expenses to analyze`);
+    console.log('💭 Sample expense:', expenseData[0]);
 
     // Generate AI insights
+    console.log('🤖 Calling AI service...');
     const insights = await generateExpenseInsights(expenseData);
+    console.log('✅ AI insights generated:', insights.length);
     return insights;
   } catch (error) {
     console.error('Error getting AI insights:', error);
