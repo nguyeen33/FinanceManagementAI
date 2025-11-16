@@ -156,11 +156,3 @@ The application uses a simple yet effective database schema:
 - One-click expense deletion
 - Real-time updates across all components
 
-
-
-
-
-
-
-
-_Demonstrating modern full-stack development with AI integration, completely free to build and deploy._
