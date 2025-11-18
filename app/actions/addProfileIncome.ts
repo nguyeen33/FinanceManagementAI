@@ -12,9 +12,9 @@ export async function addProfileIncome(job: string, income: number) {
     const user = await db.user.update({
       where: { clerkUserId: userId },
       data: {
-        job,
-        income,
-      },
+      ...(job ? { job } : {}),
+      income,
+    },
     });
 
     return user;
