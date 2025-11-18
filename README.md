@@ -6,7 +6,7 @@ A modern, AI-powered finance tracking web application built with Next.js 15, fea
 
 ### Deploy on Vercel 
 
-https://finance-management-ai-wj7y-git-main-nguyeen33s-projects.vercel.app?_vercel_share=ri2Pg9BebSV7KPQzmt67ytBh1UqZLQCE
+https://finance-management-ai-i9y3-git-main-nguyeen33.vercel.app?_vercel_share=FFNdOlKqxKPJMaxdKo9vt1zOFXANHV9M
 
 ✨ Features
 
