@@ -35,6 +35,7 @@ type MutableGlobal = typeof globalThis & {
 
 async function parsePdf(buffer: Buffer): Promise<string> {
   const globalAny = globalThis as MutableGlobal;
+
   if (typeof globalAny.window === "undefined") {
     globalAny.window = {} as Window & typeof globalThis;
   }
@@ -45,10 +46,19 @@ async function parsePdf(buffer: Buffer): Promise<string> {
     globalAny.screen = {} as Screen;
   }
 
-  const { default: pdfParse } = await import("pdf-parse");
+  // Import pdf-parse một lần
+  const pdfModule = await import("pdf-parse");
+
+  // Fix lỗi ESM/CJS khi deploy lên Vercel
+  const pdfParse =
+    (pdfModule as any).default && typeof (pdfModule as any).default === "function"
+      ? (pdfModule as any).default
+      : pdfModule;
+
   const data = await pdfParse(buffer);
   return data.text;
 }
+
 
 
 
