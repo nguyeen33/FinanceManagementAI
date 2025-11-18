@@ -11,7 +11,7 @@ export async function generateInsightAnswer(question: string): Promise<string> {
       throw new Error('User not authenticated');
     }
 
-    // Get user's recent expenses (last 30 days)
+    // Get user's recent expenses 
     const thirtyDaysAgo = new Date();
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
 
@@ -25,7 +25,7 @@ export async function generateInsightAnswer(question: string): Promise<string> {
       orderBy: {
         createdAt: 'desc',
       },
-      take: 50, // Limit to recent 50 expenses for analysis
+      take: 50, // Limit 50 expenses for analysis
     });
 
     // Convert to format expected by AI

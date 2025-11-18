@@ -18,7 +18,7 @@ const openai = new OpenAI({
   },
 });
 
-// Allow overriding the model via env. If using OpenRouter, set OPENROUTER_MODEL to a valid OpenRouter model.
+
 const OPENROUTER_MODEL = process.env.OPENROUTER_MODEL || 'mistralai/mixtral-8x7b-instruct:latest';
 
 export interface ExpenseRecord {
@@ -120,7 +120,7 @@ export async function generateExpenseInsights(
         .replace(/\s*```$/, '');
     }
 
-    // Parse AI response
+    // Analyze AI response
     const insights = JSON.parse(cleanedResponse);
 
     // Add IDs and ensure proper format
@@ -139,7 +139,7 @@ export async function generateExpenseInsights(
   } catch (error) {
     console.error('❌ Error generating AI insights:', error);
 
-    // Fallback to mock insights if AI fails
+    // Fallback to sample insights if AI fails
     return [
       {
         id: 'fallback-1',

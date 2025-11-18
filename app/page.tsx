@@ -5,6 +5,8 @@ import Guest from '@/components/Guest';
 import RecordChart from '@/components/RecordChart';
 import RecordHistory from '@/components/RecordHistory';
 import { currentUser } from '@clerk/nextjs/server';
+import AddProfileCard from "@/components/AddProfileCard";
+import ProfileDisplay from '@/components/ProfileDisplay';
 
 export default async function HomePage() {
   const user = await currentUser();
@@ -81,6 +83,8 @@ export default async function HomePage() {
                 </div>
               </div>
             </div>
+            <ProfileDisplay />
+            <AddProfileCard />
             {/* Add New Expense */}
             <AddNewRecord />
           </div>

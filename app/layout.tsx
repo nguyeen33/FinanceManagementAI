@@ -4,6 +4,7 @@ import './globals.css';
 import ClerkThemeProvider from '@/components/ClerkThemeProvider';
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
+import { ProfileProvider } from "@/contexts/ProfileContext";
 
 import { ThemeProvider } from '@/contexts/ThemeContext';
 
@@ -48,13 +49,15 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 transition-colors duration-300`}
       >
-        <ThemeProvider>
-          <ClerkThemeProvider>
-            <Navbar />
-            {children}
-            <Footer />
-          </ClerkThemeProvider>
-        </ThemeProvider>
+         <ProfileProvider>
+          <ThemeProvider>
+            <ClerkThemeProvider>
+              <Navbar />
+                {children}
+              <Footer />
+            </ClerkThemeProvider>
+          </ThemeProvider>
+        </ProfileProvider>
       </body>
     </html>
   );

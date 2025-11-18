@@ -19,7 +19,7 @@ interface AIAnswer {
   isLoading: boolean;
 }
 
-const AIInsights = () => {
+const AIInsights = ({ income }: { income: number | null }) => {
   const [insights, setInsights] = useState<InsightData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);

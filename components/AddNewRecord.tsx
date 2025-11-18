@@ -14,17 +14,17 @@ const AddRecord = () => {
   const [isCategorizingAI, setIsCategorizingAI] = useState(false); // State for AI categorization loading
 
   const clientAction = async (formData: FormData) => {
-    setIsLoading(true); // Show spinner
-    setAlertMessage(null); // Clear previous messages
+    setIsLoading(true); 
+    setAlertMessage(null); 
 
-    formData.set('amount', amount.toString()); // Add the amount value to the form data
-    formData.set('category', category); // Add the selected category to the form data
+    formData.set('amount', amount.toString()); 
+    formData.set('category', category); 
 
-    const { error } = await addExpenseRecord(formData); // Removed `data` since it's unused
+    const { error } = await addExpenseRecord(formData); 
 
     if (error) {
       setAlertMessage(`Error: ${error}`);
-      setAlertType('error'); // Set alert type to error
+      setAlertType('error'); 
     } else {
       setAlertMessage('Expense record added successfully!');
       setAlertType('success'); // Set alert type to success
