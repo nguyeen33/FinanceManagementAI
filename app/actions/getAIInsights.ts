@@ -15,6 +15,12 @@ export async function getAIInsights(): Promise<AIInsight[]> {
     }
     console.log('✅ User authenticated:', user.clerkUserId);
 
+    // Get user profile (job & income)
+    const profile = await db.user.findUnique({
+      where: { clerkUserId: user.clerkUserId },
+      select: { job: true, income: true },
+    });
+
     // Get user's recent expenses (last 30 days)
     const thirtyDaysAgo = new Date();
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
@@ -68,9 +74,12 @@ export async function getAIInsights(): Promise<AIInsight[]> {
     console.log(`📊 Found ${expenses.length} expenses to analyze`);
     console.log('💭 Sample expense:', expenseData[0]);
 
-    // Generate AI insights
+    // Generate AI insights (now including job & income context)
     console.log('🤖 Calling AI service...');
-    const insights = await generateExpenseInsights(expenseData);
+    const insights = await generateExpenseInsights(expenseData, {
+      job: profile?.job ?? null,
+      income: profile?.income ?? null,
+    });
     console.log('✅ AI insights generated:', insights.length);
     return insights;
   } catch (error) {

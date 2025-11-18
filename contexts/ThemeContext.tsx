@@ -16,17 +16,20 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
-    // Check localStorage first, then system preference
-    const savedTheme = localStorage.getItem('theme') as Theme;
-    if (savedTheme) {
-      setTheme(savedTheme);
-    } else {
-      const systemPrefersDark = window.matchMedia(
-        '(prefers-color-scheme: dark)'
-      ).matches;
-      setTheme(systemPrefersDark ? 'dark' : 'light');
-    }
+    const raf = window.requestAnimationFrame(() => {
+      setMounted(true);
+      // Check localStorage first, then system preference
+      const savedTheme = localStorage.getItem('theme') as Theme | null;
+      if (savedTheme === 'light' || savedTheme === 'dark') {
+        setTheme(savedTheme);
+      } else {
+        const systemPrefersDark = window.matchMedia(
+          '(prefers-color-scheme: dark)'
+        ).matches;
+        setTheme(systemPrefersDark ? 'dark' : 'light');
+      }
+    });
+    return () => window.cancelAnimationFrame(raf);
   }, []);
 
   useEffect(() => {

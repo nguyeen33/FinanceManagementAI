@@ -7,41 +7,53 @@ import { generateAIAnswer, ExpenseRecord } from '@/lib/ai';
 export async function generateInsightAnswer(question: string): Promise<string> {
   try {
     const user = await checkUser();
-    if (!user) {
-      throw new Error('User not authenticated');
-    }
+    if (!user) throw new Error('User not authenticated');
 
-    // Get user's recent expenses 
+    // Get job + income
+    const profile = await db.user.findUnique({
+      where: { clerkUserId: user.clerkUserId },
+      select: { job: true, income: true },
+    });
+
     const thirtyDaysAgo = new Date();
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
 
     const expenses = await db.record.findMany({
       where: {
         userId: user.clerkUserId,
-        createdAt: {
-          gte: thirtyDaysAgo,
-        },
+        createdAt: { gte: thirtyDaysAgo },
       },
-      orderBy: {
-        createdAt: 'desc',
-      },
-      take: 50, // Limit 50 expenses for analysis
+      orderBy: { createdAt: 'desc' },
+      take: 50,
     });
 
-    // Convert to format expected by AI
-    const expenseData: ExpenseRecord[] = expenses.map((expense) => ({
-      id: expense.id,
-      amount: expense.amount,
-      category: expense.category || 'Other',
-      description: expense.text,
-      date: expense.createdAt.toISOString(),
+    const expenseData: ExpenseRecord[] = expenses.map((e) => ({
+      id: e.id,
+      amount: e.amount,
+      category: e.category || "Other",
+      description: e.text,
+      date: e.createdAt.toISOString(),
     }));
 
-    // Generate AI answer
-    const answer = await generateAIAnswer(question, expenseData);
+    // TẠO PROMPT TỐT HƠN CHO AI
+    const aiPrompt = `
+User Profile:
+- Job: ${profile?.job ?? "Unknown"}
+- Monthly Income: ${profile?.income ?? "Unknown"}
+
+Expenses (last 30 days): ${JSON.stringify(expenseData, null, 2)}
+
+User Question:
+${question}
+
+Now provide an insight based on job, income and spending behaviour.
+`;
+
+    const answer = await generateAIAnswer(aiPrompt, expenseData);
     return answer;
-  } catch (error) {
-    console.error('Error generating insight answer:', error);
-    return "I'm unable to provide a detailed answer at the moment. Please try refreshing the insights or check your connection.";
+
+  } catch (err) {
+    console.error(err);
+    return "I'm unable to generate insight right now.";
   }
 }

@@ -5,8 +5,15 @@ import getUserRecord from '@/app/actions/getUserRecord';
 import getBestWorstExpense from '@/app/actions/getBestWorstExpense';
 import { useProfile } from "@/contexts/ProfileContext";
 
+interface ExpenseStatsData {
+  record?: number;
+  daysWithRecords?: number;
+  bestExpense?: number;
+  worstExpense?: number;
+}
+
 const ExpenseStats = () => {
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<ExpenseStatsData | null>(null);
   const [loading, setLoading] = useState(true);
   const { profile } = useProfile(); //  Dùng được sau khi chuyển sang client component
 
@@ -17,7 +24,12 @@ const ExpenseStats = () => {
           getUserRecord(),
           getBestWorstExpense(),
         ]);
-        setData({ ...userRecordResult, ...rangeResult });
+        setData({
+          record: userRecordResult.record,
+          daysWithRecords: userRecordResult.daysWithRecords,
+          bestExpense: rangeResult.bestExpense,
+          worstExpense: rangeResult.worstExpense,
+        });
       } catch (error) {
         console.error("Error fetching expense statistics:", error);
       } finally {
@@ -73,11 +85,11 @@ const ExpenseStats = () => {
           {/* ⬇️ HIỂN THỊ % CHI TIÊU SO VỚI THU NHẬP */}
           {profile?.income && (
             <p className="text-sm text-gray-700 dark:text-gray-300 mt-3 text-center">
-              Bạn đã dùng{" "}
+              You have used{" "}
               <strong>
                 {((validRecord / profile.income) * 100).toFixed(1)}%
               </strong>{" "}
-              thu nhập tháng này
+              money of this month
             </p>
           )}
         </div>

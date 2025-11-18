@@ -18,12 +18,17 @@ export function ProfileProvider({ children }: { children: React.ReactNode }) {
   const [profile, setProfileState] = useState<Profile | null>(null);
 
   useEffect(() => {
-    const stored = localStorage.getItem("user_profile");
-    if (stored) {
-      try {
-        setProfileState(JSON.parse(stored));
-      } catch {}
-    }
+    const timer = window.requestAnimationFrame(() => {
+      const stored = localStorage.getItem("user_profile");
+      if (stored) {
+        try {
+          setProfileState(JSON.parse(stored));
+        } catch {
+          // ignore
+        }
+      }
+    });
+    return () => window.cancelAnimationFrame(timer);
   }, []);
 
   const setProfile = (p: Profile) => {

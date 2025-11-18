@@ -2,9 +2,11 @@
 import { useRef, useState } from 'react';
 import addExpenseRecord from '@/app/actions/addExpenseRecord';
 import { suggestCategory } from '@/app/actions/suggestCategory';
+import uploadExpenseFile from '@/app/actions/uploadExpenseFile';
 
 const AddRecord = () => {
   const formRef = useRef<HTMLFormElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [amount, setAmount] = useState(50); // Default value for expense amount
   const [alertMessage, setAlertMessage] = useState<string | null>(null); // State for alert message
   const [alertType, setAlertType] = useState<'success' | 'error' | null>(null); // State for alert type
@@ -12,6 +14,8 @@ const AddRecord = () => {
   const [category, setCategory] = useState(''); // State for selected expense category
   const [description, setDescription] = useState(''); // State for expense description
   const [isCategorizingAI, setIsCategorizingAI] = useState(false); // State for AI categorization loading
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null); // State for uploaded file (receipt, bill, etc.)
+  const [isUploadingFile, setIsUploadingFile] = useState(false);
 
   const clientAction = async (formData: FormData) => {
     setIsLoading(true); 
@@ -62,6 +66,42 @@ const AddRecord = () => {
       setAlertType('error');
     } finally {
       setIsCategorizingAI(false);
+    }
+  };
+
+  const handleUploadFile = async (file: File) => {
+    setIsUploadingFile(true);
+    setAlertMessage(null);
+
+    try {
+      const data = new FormData();
+      data.append('receipt', file);
+      if (description) data.append('description', description);
+      if (category) data.append('category', category);
+
+      const result = await uploadExpenseFile(data);
+
+      if (!result.success) {
+        setAlertMessage(result.message);
+        setAlertType('error');
+      } else {
+        setAlertMessage(result.message);
+        setAlertType('success');
+        formRef.current?.reset();
+        if (fileInputRef.current) {
+          fileInputRef.current.value = '';
+        }
+        setUploadedFile(null);
+        setAmount(50);
+        setCategory('');
+        setDescription('');
+      }
+    } catch (error) {
+      console.error('Upload failed:', error);
+      setAlertMessage('Failed to process the uploaded file.');
+      setAlertType('error');
+    } finally {
+      setIsUploadingFile(false);
     }
   };
 
@@ -153,8 +193,8 @@ const AddRecord = () => {
           </div>
         </div>
 
-        {/* Category Selection and Amount */}
-        <div className='grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 p-3 sm:p-4 bg-gradient-to-r from-green-50/50 to-emerald-50/50 dark:from-green-900/10 dark:to-emerald-900/10 rounded-xl border border-green-100/50 dark:border-green-800/50'>
+        {/* Category Selection, Amount and Upload */}
+        <div className='grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4 p-3 sm:p-4 bg-gradient-to-r from-green-50/50 to-emerald-50/50 dark:from-green-900/10 dark:to-emerald-900/10 rounded-xl border border-green-100/50 dark:border-green-800/50'>
           {/* Category Selection */}
           <div className='space-y-1.5'>
             <label
@@ -254,6 +294,59 @@ const AddRecord = () => {
                 required
               />
             </div>
+          </div>
+
+          {/* Upload File (receipt, bill, CSV) */}
+          <div className='space-y-1.5'>
+            <label
+              htmlFor='receipt'
+              className='flex items-center gap-2 text-xs font-semibold text-gray-700 dark:text-gray-300 tracking-wide'
+            >
+              <span className='w-1.5 h-1.5 bg-green-500 rounded-full'></span>
+              Upload File
+              <span className='text-xs text-gray-400 dark:text-gray-500 ml-2 font-normal hidden sm:inline'>
+                Optional: You may upload bill image, PDF, or CSV
+              </span>
+            </label>
+            <input
+              type='file'
+              id='receipt'
+              name='receipt'
+              accept='.csv,application/pdf,image/*'
+              ref={fileInputRef}
+              onChange={(e) => {
+                const file = e.target.files?.[0] || null;
+                setUploadedFile(file);
+                if (file) {
+                  handleUploadFile(file);
+                }
+              }}
+              className='block w-full text-xs text-gray-500 dark:text-gray-400
+                         file:mr-3 file:py-2.5 file:px-4
+                         file:rounded-xl file:border-0
+                         file:text-xs file:font-semibold
+                         file:bg-emerald-50 file:text-emerald-700
+                         hover:file:bg-emerald-100
+                         bg-white/70 dark:bg-gray-800/70 border-2 border-gray-200/80 dark:border-gray-600/80 rounded-xl cursor-pointer shadow-sm hover:shadow-md transition-all duration-200'
+            />
+            {uploadedFile && (
+              <p className='text-[11px] text-gray-500 dark:text-gray-400'>
+                {isUploadingFile ? 'Uploading:' : 'Selected:'}{' '}
+                <span className='font-medium'>{uploadedFile.name}</span>
+              </p>
+            )}
+            <p className='text-[11px] text-gray-400 dark:text-gray-500'>
+              The file will be scanned to detect totals automatically after selection.
+            </p>
+            {isUploadingFile && (
+              <p className='text-[11px] text-emerald-600 dark:text-emerald-400 flex items-center gap-1'>
+                <span className='inline-block w-3 h-3 border-2 border-emerald-500/30 border-t-emerald-500 rounded-full animate-spin'></span>
+                Parsing file...
+              </p>
+            )}
+            <p className='text-[11px] text-gray-400 dark:text-gray-500 mt-1'>
+              Works with receipts, invoices, PDFs, and CSV exports.
+            </p>
           </div>
         </div>
 

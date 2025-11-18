@@ -33,19 +33,22 @@ interface Record {
 const BarChart = ({ records }: { records: Record[] }) => {
   const { theme } = useTheme();
   const isDark = theme === 'dark';
-  const [windowWidth, setWindowWidth] = useState(1024); // Default to desktop width
+  const [windowWidth, setWindowWidth] = useState(() =>
+    typeof window !== 'undefined' ? window.innerWidth : 1024
+  ); // Default to desktop width
 
   useEffect(() => {
-    // Set initial window width
-    setWindowWidth(window.innerWidth);
-
-    // Add resize listener
+    if (typeof window === 'undefined') return;
     const handleResize = () => {
       setWindowWidth(window.innerWidth);
     };
 
+    const rafId = window.requestAnimationFrame(handleResize);
     window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    return () => {
+      window.cancelAnimationFrame(rafId);
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
 
   const isMobile = windowWidth < 640;
