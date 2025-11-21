@@ -73,7 +73,7 @@ https://ati-final-git-main-nguyeen33.vercel.app?_vercel_share=iZTXOCaTayU7Rv92mk
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/sahandghavidel/next-expense-tracker-ai.git
+   git clone https://github.com/nguyeen33/FinanceManagementAI.git
    cd next-expense-tracker-ai
    ```
 
