@@ -4,36 +4,10 @@ A modern, AI-powered finance tracking web application built with Next.js 15, fea
 
 ## 🌐 Deployment
 
-### Deploy on Vercel 
+### Deploy on Vercel - (Thầy có thể truy cập trang web nhanh bằng link dưới đây)
 
 https://ati-final-git-main-nguyeen33.vercel.app?_vercel_share=iZTXOCaTayU7Rv92mkYn585KITmQuLz4
 
-✨ Features
-
-🤖 AI-Powered Intelligence
-
-- **Smart Categorization**: AI automatically suggests expense categories based on descriptions
-- **Financial Insights**: Personalized recommendations and spending pattern analysis
-- **Interactive AI Chat**: Get detailed explanations and advice for any insight
-
-💼 Core Functionality
-
-- **Expense Tracking**: Add, edit, and delete expenses with ease
-- **Real-time Charts**: Beautiful visualizations using Chart.js
-- **Statistics Dashboard**: Comprehensive spending analytics
-- **Expense History**: Complete transaction history with search and filter
-🎨 Modern UI/UX
-
-- **Light & Dark Mode**: Seamless theme switching with smooth transitions
-- **Fully Responsive**: Optimized for all screen sizes
-- **Beautiful Animations**: Smooth interactions and hover effects
-- **Gradient Designs**: Modern card layouts with backdrop blur effects
-  
-🔐 Authentication & Security
-
-- **Multiple Login Options**: Google, GitHub, Facebook
-- **Secure Sessions**: Managed by Clerk authentication
-- **User Profiles**: Personalized dashboards with user information
 
 ## 🛠️ Tech Stack
 
@@ -57,11 +31,8 @@ https://ati-final-git-main-nguyeen33.vercel.app?_vercel_share=iZTXOCaTayU7Rv92mk
 - **[Clerk](https://go.clerk.com/WSe7K8F)** - Complete authentication solution
 - **OpenAI Compatible API** - For intelligent expense categorization
 
-### Deployment
 
-- **[Vercel](https://vercel.com)** - Serverless deployment platform
-
-## 🚀 Getting Started
+## 🚀 Installation & Execution Guide 
 
 ### Prerequisites
 
@@ -97,9 +68,9 @@ https://ati-final-git-main-nguyeen33.vercel.app?_vercel_share=iZTXOCaTayU7Rv92mk
    NEXT_PUBLIC_CLERK_SIGN_IN_FALLBACK_REDIRECT_URL="/"
    NEXT_PUBLIC_CLERK_SIGN_UP_FALLBACK_REDIRECT_URL="/"
 
-   # OpenRouter AI
+   # OpenRouter AI & AI Model
    OPENROUTER_API_KEY="your-openrouter-api-key"
-
+   OPENROUTER_MODEL=google/gemini-2.5-flash
    # App URL
    NEXT_PUBLIC_APP_URL="http://localhost:3000"
    ```
@@ -120,39 +91,5 @@ https://ati-final-git-main-nguyeen33.vercel.app?_vercel_share=iZTXOCaTayU7Rv92mk
 6. **Open your browser**
    Navigate to [http://localhost:3000](http://localhost:3000)
 
-## 📊 Database Schema
 
-The application uses a simple yet effective database schema:
-
-- **User**: Stores user information from Clerk
-- **Record**: Stores expense transactions with categories and amounts
-
-## 🎯 Key Features Walkthrough
-
-### 1. Smart Expense Adding
-
-- Enter description, date, and amount
-- Click the ✨ button for AI category suggestions
-- Manual category selection from predefined options
-
-### 2. AI Insights Dashboard
-
-- Real-time spending pattern analysis
-- Categorized insights: warnings, tips, success, info
-- Interactive expandable AI explanations
-- Confidence scores for each insight
-
-### 3. Visual Analytics
-
-- Interactive Chart.js charts
-- Daily, weekly, and monthly views
-- Color-coded spending categories
-- Responsive design for all devices
-
-### 4. Expense Management
-
-- Complete transaction history
-- Search and filter capabilities
-- One-click expense deletion
-- Real-time updates across all components
 
