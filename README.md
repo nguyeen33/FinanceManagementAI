@@ -1,6 +1,6 @@
 💰 FinanceManagement AI
 
-A modern, AI-powered finance tracking web application built with Next.js 15, featuring intelligent categorization, real-time analytics, and personalized financial insights.
+A contemporary, AI-enhanced financial tracking web app developed with Next.js 15, offering smart expense categorization, real-time data analytics, and customized financial insights.
 
 ## 🌐 Deployment
 
@@ -45,7 +45,7 @@ https://ati-final-git-main-nguyeen33.vercel.app?_vercel_share=iZTXOCaTayU7Rv92mk
 
    ```bash
    git clone https://github.com/nguyeen33/FinanceManagementAI.git
-   cd next-expense-tracker-ai
+   cd FinanceManagementAI
    ```
 
 2. **Install dependencies**
